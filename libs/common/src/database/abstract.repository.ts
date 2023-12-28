@@ -22,7 +22,7 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
       throw new NotFoundException('Document not found');
     }
 
-    return document;
+    return document as TDocument;
   }
 
   async findOneAndUpdate(
@@ -39,11 +39,15 @@ export abstract class AbstractRepository<TDocument extends AbstractDocument> {
       throw new NotFoundException('Document not found.');
     }
 
-    return document;
+    return document as TDocument;
   }
 
   async find(filterQuery: FilterQuery<TDocument>): Promise<TDocument[]> {
-    return this.model.find(filterQuery, {}, { lean: true });
+    return this.model.find(
+      filterQuery,
+      {},
+      { lean: true },
+    ) as unknown as TDocument[];
   }
 
   async findOneAndDelete(filterQuery: FilterQuery<TDocument>) {
